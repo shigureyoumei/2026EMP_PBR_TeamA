@@ -2,6 +2,13 @@
 
 Add every new update directly below this introduction, above all previous entries. Use English, include a timestamp in JST (UTC+09:00), and briefly describe completed features and verification. Keep older entries intact.
 
+## 2026-10-02 12:52 JST — Trilingual Project README
+
+- Replaced the Chinese-only README with equivalent English, Chinese, and Japanese sections, in that order, with language navigation links.
+- Documented the current four-wall scene, controls, fish and experiment settings, projection room, logging, hardware interfaces, and remaining integration limits in all three languages.
+- Corrected startup instructions to use the included `FishAttention360.unity` scene and separated historical prototypes from current functionality.
+- Verified language order, local documentation links, shared technical references, and diff whitespace. No Unity runtime code or assets changed.
+
 ## 2026-10-02 12:28 JST — GitHub Repository Preparation
 
 - Moved project entry instructions to the repository root at `D:\projects\2026EMP_PBR_TeamA`, matching the relocated Unity project.
