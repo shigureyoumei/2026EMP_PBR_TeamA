@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9237dda3e45f054985a3b99aadf4fb3, type: 3}
+  m_Name: PilotConfig
+  m_EditorClassIdentifier: Assembly-CSharp::PBR.ExperimentConfig
+  seed: 20260930
+  persistentSchool: 1
+  ringWorld: 1
+  backgroundDetail: 2
+  fishCount: 10
+  swimSpeed: 2.4
+  burstSpeed: 6
+  acceleration: 3
+  captureRecoverySeconds: 3
+  durationSeconds: 90
+  spawnInterval: 3
+  travelSeconds: 16
+  hidePauseSeconds: 2
+  monitoringHalfAngle: 25
+  cueDelay: 1
+  handoffDelay: 2
+  handoffSeconds: 4
+  workloadThreshold: 2
+  sampleHz: 20
+  shotCooldown: 0.2
+  panoramicPreview: 0
+  fishPrefabs:
+  - {fileID: 3117882010323047475, guid: aea85242e96a153488358c5c16218b6e, type: 3}
+  - {fileID: 2971479965097845884, guid: fea582acda5325d4695cec581d869f5d, type: 3}
+  - {fileID: 5175769010928796624, guid: 8b794c4ea33ca494aad8c388ca1d66ed, type: 3}
+  rockPrefabs:
+  - {fileID: 919132149155446097, guid: 8bf597a3cf9c22349a394d0eace9c738, type: 3}
+  - {fileID: 919132149155446097, guid: 313a46edfe490f044bf0fc22d87128f8, type: 3}
+  - {fileID: 919132149155446097, guid: dfe39abe8af81cf499129f216ebc40e7, type: 3}
+  transferableMarkerMaterial: {fileID: 2100000, guid: 8ff5ec3c041cabf47bd5a7e38bbed3bf, type: 2}

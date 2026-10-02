@@ -1,0 +1,5 @@
+PASS: 848866 assertions; 300 simulated seconds; 143 wall crossings; 10 fish physically hid.
+Cover types used: Rock,Arch,Kelp,FanCoral,Cave
+Radius range: 6.500007 to 24.60284; height range: 1.050025 to 7.290748.
+Four camera seams (including 360 wrap), collision clearance, smooth turns, forward propulsion, all four states, stable population verified.
+PASS: normal rendered player loop and timed block completion. Log: C:/Users/naran/AppData/LocalLow/DefaultCompany/PBR\PBRLogs\20260930T095445429_f9f98d6a

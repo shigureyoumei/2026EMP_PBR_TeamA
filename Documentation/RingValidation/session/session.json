@@ -1,0 +1,10 @@
+{
+    "utc": "2026-09-30T09:24:24.0581765Z",
+    "pair": "pilot01",
+    "condition": "FixedRole",
+    "unityVersion": "6000.6.3f1",
+    "config": "{\"seed\":20260930,\"persistentSchool\":true,\"ringWorld\":true,\"fishCount\":10,\"swimSpeed\":1.5,\"burstSpeed\":4.0,\"acceleration\":2.0,\"captureRecoverySeconds\":3.0,\"durationSeconds\":10.0,\"spawnInterval\":3.0,\"travelSeconds\":16.0,\"hidePauseSeconds\":2.0,\"monitoringHalfAngle\":25.0,\"cueDelay\":1.0,\"handoffDelay\":2.0,\"handoffSeconds\":4.0,\"workloadThreshold\":2,\"sampleHz\":20,\"shotCooldown\":0.20000000298023224,\"panoramicPreview\":false,\"fishPrefabs\":[{\"instanceID\":1099511630263},{\"instanceID\":1099511630261},{\"instanceID\":1099511630278}],\"rockPrefabs\":[{\"instanceID\":1099511630240},{\"instanceID\":1099511630239},{\"instanceID\":1099511630241}],\"transferableMarkerMaterial\":{\"instanceID\":1099511630206}}",
+    "dataStatus": "prototype_pilot_only",
+    "input": "desktop_simulation_or_external_api",
+    "block": 1
+}

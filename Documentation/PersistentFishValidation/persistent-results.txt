@@ -1,0 +1,2 @@
+PASS: 227500 assertions; 120 simulated seconds; all four states; physical hiding and exit; capture retention and cooldown; stable IDs across blocks.
+PASS: normal player loop and timed block end. Log: C:/Users/naran/AppData/LocalLow/DefaultCompany/PBR\PBRLogs\20260930T085150439_fb9dbe74

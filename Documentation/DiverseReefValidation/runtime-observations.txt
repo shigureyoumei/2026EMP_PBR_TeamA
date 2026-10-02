@@ -1,0 +1,1 @@
+Runtime sampled peak speed: 6; observed FPS: 60. Final material rendering inspected after backface fix.

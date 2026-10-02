@@ -1,0 +1,1 @@
+PASS: 150 checks. Square, rectangular, Large Space dimensions; centered and offset observers; all wall corners, center rays, upward miss.

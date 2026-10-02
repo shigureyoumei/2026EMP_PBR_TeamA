@@ -1,0 +1,4 @@
+PASS: 876013 assertions; 300 simulated seconds; 134 wall crossings; 9 fish physically hid.
+Radius range: 6.614206 to 23.70311; height range: 1.422258 to 6.926143.
+Four camera seams (including 360 wrap), collision clearance, smooth turns, forward propulsion, all four states, stable population verified.
+PASS: normal rendered player loop and timed block completion. Log: C:/Users/naran/AppData/LocalLow/DefaultCompany/PBR\PBRLogs\20260930T092424056_99cfa26d

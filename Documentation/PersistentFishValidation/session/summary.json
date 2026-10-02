@@ -1,0 +1,27 @@
+{
+  "status": "prototype_descriptive_only",
+  "persistent_school": true,
+  "capture_count": 0,
+  "missed_count": 0,
+  "resolved_target_capture_rate": null,
+  "censored_event_count_including_distractors": 0,
+  "mean_response_time_from_spawn_s": null,
+  "head_yaw_travel_degrees": {
+    "b": 0.0,
+    "a": 0.0
+  },
+  "head_yaw_valid_observed_seconds": {
+    "b": 11.957744,
+    "a": 0.35358500000000004
+  },
+  "event_counts": {
+    "fish_appeared": 7,
+    "fish_present_at_end": 10,
+    "fish_present": 10,
+    "fish_behavior": 29,
+    "fish_reappeared": 11,
+    "block_start": 1,
+    "occlusion_enter": 15,
+    "block_end": 1
+  }
+}

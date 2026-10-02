@@ -1,0 +1,10 @@
+{
+    "utc": "2026-09-30T02:55:11.8142326Z",
+    "pair": "automated_smoke_not_participant",
+    "condition": "AdaptiveHandoff",
+    "unityVersion": "6000.6.3f1",
+    "config": "{\"seed\":20260930,\"durationSeconds\":90.0,\"spawnInterval\":3.0,\"travelSeconds\":16.0,\"hidePauseSeconds\":2.0,\"monitoringHalfAngle\":25.0,\"cueDelay\":1.0,\"handoffDelay\":2.0,\"handoffSeconds\":4.0,\"workloadThreshold\":2,\"sampleHz\":20,\"shotCooldown\":0.20000000298023224,\"panoramicPreview\":false,\"fishPrefabs\":[{\"instanceID\":1099511630214},{\"instanceID\":1099511630194},{\"instanceID\":1099511630202}],\"rockPrefabs\":[{\"instanceID\":1099511630196},{\"instanceID\":1099511630195},{\"instanceID\":1099511630197}],\"transferableMarkerMaterial\":{\"instanceID\":1099511630182}}",
+    "dataStatus": "prototype_pilot_only",
+    "input": "desktop_simulation_or_external_api",
+    "block": 1
+}

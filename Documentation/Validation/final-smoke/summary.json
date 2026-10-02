@@ -1,0 +1,40 @@
+{
+  "status": "prototype_descriptive_only",
+  "capture_count": 2,
+  "missed_count": 1,
+  "resolved_target_capture_rate": 0.6666666666666666,
+  "censored_event_count_including_distractors": 6,
+  "mean_response_time_from_spawn_s": 1.5201954999999996,
+  "head_yaw_travel_degrees": {
+    "a": 375.0518949999997,
+    "b": 209.8454459999998
+  },
+  "head_yaw_valid_observed_seconds": {
+    "a": 27.641551,
+    "b": 27.641551
+  },
+  "event_counts": {
+    "sample_late": 2,
+    "shot_blocked": 1,
+    "target_missed": 1,
+    "frame_gap": 1,
+    "block_end": 1,
+    "occlusion_enter": 6,
+    "block_start": 1,
+    "capture": 2,
+    "fish_appeared": 10,
+    "route_resume": 4,
+    "responsible_cue": 14,
+    "wrong_owner": 1,
+    "target_censored": 6,
+    "button_press": 5,
+    "handoff_end": 1,
+    "fish_reappeared": 4,
+    "orientation_empty_scene": 33,
+    "distractor_exit": 1,
+    "fish_spawn": 10,
+    "wrong_distractor": 1,
+    "route_pause": 5,
+    "handoff_start": 2
+  }
+}
