@@ -32,15 +32,25 @@ namespace PBR
         System.Random random;
         double start, stoppedAt, nextSpawn, nextSample, nextFlush, previous;
         int nextId;
+        bool schoolInitialized;
+        NetCaptureSystem nets;
+        public NetCaptureSystem Nets=>nets;
 
         void Awake() { Application.runInBackground = true; Application.targetFrameRate = 60; }
         void Start() { EnsureSchool(); }
         void EnsureSchool()
         {
-            if (!config || !config.persistentSchool || fish.Count != 0) return;
+            if (!config || !config.persistentSchool || schoolInitialized) return;
             random = new System.Random(config.seed); nextId = 0;
-            for (int i = 0; i < Mathf.Clamp(config.fishCount, 1, 40); i++) Spawn(0);
+            for (int i = 0; i < Mathf.Clamp(config.fishCount, 1, ExperimentConfig.MaximumFishCount); i++) Spawn(0);
+            schoolInitialized=true;
             Physics.SyncTransforms();
+        }
+        public void ResetSchool()
+        {
+            if(Running || !config || !config.persistentSchool)return;
+            if(nets)nets.CancelAll();ClearFish();schoolInitialized=false;EnsureSchool();
+            Status="School reset: "+fish.Count+" fish";
         }
 
         public void Begin()
@@ -71,17 +81,18 @@ namespace PBR
         {
             if (!Running) return;
             stoppedAt = Elapsed;
+            if(nets)nets.CancelAll();
             foreach (var f in fish) log.Event(stoppedAt, config.persistentSchool ? "fish_present_at_end" : "target_censored", f, detail: reason);
             log.Event(stoppedAt, "block_end", detail: reason);
             log.Dispose(); log = null; Running = false;
             Status = reason == "completed" ? "Block complete" : "Block stopped: " + reason;
             if (!config.persistentSchool) ClearFish();
         }
-        void ClearFish() { foreach (var f in fish) if (f) Destroy(f.gameObject); fish.Clear(); }
+        void ClearFish() { foreach (var f in fish) if (f){f.gameObject.SetActive(false);Destroy(f.gameObject);} fish.Clear(); }
         void LateUpdate()
         {
             if (config.persistentSchool)
-                foreach (var f in fish) f.Roaming.Tick(Time.unscaledDeltaTime);
+                foreach (var f in fish) if(!f.IsBeingCaptured)f.Roaming.Tick(Time.unscaledDeltaTime);
             if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) End();
             if (!Running) { input.ClearShots(); return; }
             double now = Elapsed;
@@ -129,7 +140,7 @@ namespace PBR
                 }
                 Assist(f, now, dt, visible);
             }
-            for (int p = 0; p < 2; p++) if (input.ConsumeShot(p)) Shoot(p, now);
+            for (int p = 0; p < 2; p++) if (input.ConsumeShot(p,out var shotRay)) Shoot(p, now,shotRay);
             if (now >= nextSample)
             {
                 if (now - nextSample > 2.0 / config.sampleHz) log.Event(now, "sample_late");
@@ -144,6 +155,7 @@ namespace PBR
         public bool Covered(int p, FishTarget f) => input.Valid(p) && ExperimentRules.Covered(input.Yaw[p], f.Yaw, config.monitoringHalfAngle);
         public bool LineVisible(FishTarget f)
         {
+            if(f.IsBeingCaptured)return false;
             Vector3 dir = f.transform.position - input.Origin;
             // Only opaque environment meshes count as occluders. Fish do not occlude one another in coverage estimates.
             return !Physics.Raycast(input.Origin, dir.normalized, dir.magnitude, 1 << 8, QueryTriggerInteraction.Ignore);
@@ -187,6 +199,9 @@ namespace PBR
             var collider = go.AddComponent<SphereCollider>(); collider.radius = .65f;
             go.layer = 9;
             int visualIndex = kind == FishKind.Distractor ? 2 : f.Owner;
+            // Each species has A, B and distractor variants, preserving responsibility cues.
+            if(config.naturalReef && config.fishPrefabs.Length>=6)
+                visualIndex+=3*((id/5)%(config.fishPrefabs.Length/3));
             GameObject visual = Instantiate(config.fishPrefabs[visualIndex % config.fishPrefabs.Length], go.transform);
             visual.name = "Animated fish";
             var anim = visual.GetComponentInChildren<Animation>();
@@ -211,13 +226,21 @@ namespace PBR
             if (Running) log.Event(now, "fish_spawn", f, detail: "route=" + routeIndex);
         }
         public void Shoot(int player, double now)
+        {if(player>=0 && player<2)Shoot(player,now,input.Aim(player));}
+        void Shoot(int player,double now,Ray ray)
         {
             if (!Running || player < 0 || player > 1) return;
             log.Event(now, "button_press", actor: player);
             if (!input.Valid(player)) { log.Event(now, "shot_rejected_stale_input", actor: player); return; }
             if (now - lastShot[player] < config.shotCooldown) { log.Event(now, "shot_rejected_cooldown", actor: player); return; }
             lastShot[player] = now;
-            if (!Physics.Raycast(input.Aim(player), out RaycastHit hit, 100, (1 << 8) | (1 << 9), QueryTriggerInteraction.Ignore))
+            if(config.netCaptureEnabled)
+            {
+                if(!nets){nets=gameObject.AddComponent<NetCaptureSystem>();nets.Initialize(this);}
+                if(!nets.Launch(ray,player))log.Event(now,"net_launch_failed",actor:player,detail:"Check net material configuration");
+                return;
+            }
+            if (!Physics.Raycast(ray, out RaycastHit hit, 100, (1 << 8) | (1 << 9), QueryTriggerInteraction.Ignore))
             { log.Event(now, "shot_miss", actor: player); return; }
             FishTarget target = hit.collider.GetComponentInParent<FishTarget>();
             if (!target) { log.Event(now, "shot_blocked", actor: player); return; }
@@ -234,6 +257,26 @@ namespace PBR
                 Cue[player] = "HIT " + target.Id + "  +1"; CueUntil[player] = now + .8;
             }
             else Remove(target);
+        }
+        public bool NetLineVisible(Vector3 origin,FishTarget target)
+        {
+            Vector3 delta=target.transform.position-origin;
+            return !Physics.Raycast(origin,delta.normalized,delta.magnitude,1<<8,QueryTriggerInteraction.Ignore);
+        }
+        public bool CanNetCapture(FishTarget target,int player)
+        {
+            if(!config.netRespectsRoles || ExperimentRules.CanCapture(condition,target.Kind,player,target.HandoffPlayer))return true;
+            Wrong++;RecordNetEvent(target.Owner<0?"wrong_distractor":"wrong_owner",target,player);return false;
+        }
+        public void RecordNetEvent(string type,FishTarget target,int player,string detail="")
+        {if(Running)log.Event(Elapsed,type,target,player,detail);}
+        public void CompleteNetCapture(FishTarget target,int player)
+        {
+            if(!Running || !target || !target.IsBeingCaptured || !fish.Contains(target))return;
+            Captured++;log.Event(Elapsed,"capture",target,player,"area_net; fish removed after struggle");
+            log.Event(Elapsed,"fish_removed",target,player,"remaining="+(fish.Count-1));
+            Cue[player]="CAUGHT "+target.Id+" / "+(fish.Count-1)+" LEFT";CueUntil[player]=Elapsed+.8;
+            Remove(target);
         }
         void Remove(FishTarget f)
         {

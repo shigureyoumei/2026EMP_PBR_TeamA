@@ -24,6 +24,9 @@ namespace PBR
             animationClip = GetComponentInChildren<Animation>(); visual = transform.Find("Animated fish");
             float angle = (id + .3f) * Mathf.PI * 2 / config.fishCount;
             transform.position = RingHabitat.Polar(angle, id % 2 == 0 ? 10 : 21, 4.2f + id % 3 * .65f);
+            // A larger school samples more azimuths; find a clear initial position beside tall cover.
+            for(int attempt=0;attempt<48 && !habitat.Free(transform.position);attempt++)
+                transform.position=RingHabitat.Polar(angle+(attempt+1)*.07f,id%2==0?10:22,5.2f+attempt%3*.6f);
             transform.rotation = Quaternion.LookRotation(new Vector3(Mathf.Cos(angle), 0, -Mathf.Sin(angle)));
             SetState(FishMotionState.Swimming);
         }
@@ -95,27 +98,31 @@ namespace PBR
             if (next == FishMotionState.Hiding && !Choose(true)) next = FishMotionState.Swimming;
             if ((next == FishMotionState.Swimming || next == FishMotionState.Accelerating) && !Choose(false)) next = FishMotionState.Stationary;
             State = next; timer = next == FishMotionState.Accelerating ? Range(4, 7) : Range(5, 10);
+            if(next==FishMotionState.Stationary)timer=Range(Mathf.Min(.4f,settings.MaximumHoverDuration),settings.MaximumHoverDuration);
             if(next != FishMotionState.Hiding) selectedCover=null;
             Transitions++; Report("state=" + next + ";cover="+CoverKind+";site="+CoverName);
         }
         void NextState()
         {
+            // Avoid chaining hidden rest directly into another hovering state.
+            if(State==FishMotionState.Stationary || HiddenAtRest){SetState(rng.Next(2)==0?FishMotionState.Swimming:FishMotionState.Accelerating);return;}
             int next = rng.Next(3); if (next >= (int)State) next++;
             SetState((FishMotionState)next);
         }
         public override void Tick(float dt)
         {
+            float elapsed=Mathf.Max(0,dt);
             dt = Mathf.Clamp(dt, 0, .05f);
             bool resting = State == FishMotionState.Stationary || HiddenAtRest;
-            if (HiddenAtRest) { Speed = 0; timer -= dt; if (timer <= 0) NextState(); Animate(dt, 0); return; }
+            if (HiddenAtRest) { Speed = 0; timer -= elapsed; if (timer <= 0) NextState(); Animate(dt, 0); return; }
             if (path.Count == 0 || waypoint >= path.Count)
             {
                 Speed = Mathf.MoveTowards(Speed, 0, settings.acceleration * dt);
                 if (State == FishMotionState.Hiding && habitat.FullyOccluded(transform.position))
-                { HiddenAtRest = true; Speed = 0; timer = settings.hidePauseSeconds + Range(0, 1.5f); Report("hide_arrived;cover="+CoverKind+";site="+CoverName); }
+                { HiddenAtRest = true; Speed = 0; timer = Mathf.Clamp(settings.hidePauseSeconds,.1f,settings.MaximumHoverDuration); Report("hide_arrived;cover="+CoverKind+";site="+CoverName); }
                 else if (State == FishMotionState.Hiding) SetState(FishMotionState.Swimming);
                 else if (!resting) Choose(false);
-                if (resting) { timer -= dt; if (timer <= 0) NextState(); }
+                if (resting) { timer -= elapsed; if (timer <= 0) NextState(); }
                 Animate(dt, 0); return;
             }
             Vector3 delta = path[waypoint] - transform.position;
@@ -135,7 +142,7 @@ namespace PBR
             else { Speed = 0; stuck += dt; }
             if (Vector3.Distance(transform.position, path[waypoint]) < .35f) waypoint++;
             if (resting)
-            { if (Speed < .01f) { timer -= dt; if (timer <= 0) NextState(); } }
+            { if (Speed < .01f) { timer -= elapsed; if (timer <= 0) NextState(); } }
             else if (State == FishMotionState.Hiding)
             { hideTravel += dt; if (hideTravel > 55) SetState(FishMotionState.Swimming); }
             else { timer -= dt; if (timer <= 0) NextState(); }

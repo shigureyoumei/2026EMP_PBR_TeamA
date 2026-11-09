@@ -8,9 +8,13 @@
 
 This Unity research prototype is based on the proposal **Responsibility-Aware Adaptive Assistance in Large-Area Collaborative Visual Search**. It explores responsibility allocation, head-direction-based monitoring estimates, directional cues, and temporary task handoffs between two participants.
 
-The current version provides a continuous four-wall 3D reef and a configurable projection room. The school contains ten persistent fish by default. Fish swim, accelerate, hide behind physical cover, and remain stationary, with gradual turns and movement at different depths and heights. Capturing a fish awards a score without removing it; it becomes eligible for scoring again after three seconds. The same fish remain before, during, and after an experimental block.
+The current version provides a continuous four-wall 3D reef and a configurable projection room. The school starts with 50 fish across eight species-inspired silhouettes. Fish swim, accelerate, hide behind physical cover, and remain stationary, with gradual turns and movement at different depths and heights. Stationary and hidden rest last at most two seconds. A left-click launches a white net: visible fish in its area struggle, disappear, and reduce the remaining count. Uncaught fish persist between blocks; RESET SCHOOL restores the initial school.
 
 The reef contains rocks, caves, natural arches, dense aquatic plants, and fan corals. Background detail has three levels. Fish move through one surrounding 3D environment and cross neighboring wall views continuously. Cover blocks capture rays as well as visibility.
+
+The natural environment upgrade adds scanned 2K rock/sand materials, weathered geometry, curved moving plants, dense coral/seagrass/rubble, soft shadows and water lighting. See [Natural reef update and sources](Documentation/NaturalReef.md).
+
+Net capture defaults to all species; optional role filtering is configurable. See [Net animation, remaining count and reset](Documentation/NetCapture.md).
 
 ### Open and run
 
@@ -18,9 +22,9 @@ The reef contains rocks, caves, natural arches, dense aquatic plants, and fan co
 2. Use **Unity 6000.6.3f1 (Unity 6.6)**. The project uses **URP 17.6.0** and **Splines 2.9.1**. Allow Unity to restore packages and rebuild its cache.
 3. Open `Assets/PBR/Scenes/FishAttention360.unity`, the experiment scene included in this repository.
 4. Press Play, enter an anonymous pair ID, choose an experimental condition, and select START. A block lasts 90 seconds by default.
-5. Orange fish belong to participant A, cyan fish to B, and gray fish are distractors. A white marker identifies a target eligible for temporary handoff; other A/B targets retain their original responsibility.
+5. Orange/cream fish belong to participant A, blue/gold fish to B, and violet fish are distractors. A white marker identifies a target eligible for temporary handoff; other A/B targets retain their original responsibility.
 
-Local executables such as `BuildsRoom/PBRRoom.exe`, Unity caches, backups, and the separate validation project are excluded from Git. A fresh clone can run directly in the Unity Editor.
+Local executables such as `BuildsLow/PBRLow.exe`, Unity caches, backups, and the separate validation project are excluded from Git. A fresh clone can run directly in the Unity Editor.
 
 | Control | Action |
 | --- | --- |
@@ -41,10 +45,10 @@ Select `Assets/PBR/Generated360/PilotConfig.asset` in the Inspector. Stop Play b
 
 | Parameter | Default | Meaning |
 | --- | --- | --- |
-| `fishCount` | 10 | Persistent school size |
+| `fishCount` | 50 | Persistent school size |
 | `swimSpeed` / `burstSpeed` | 2.4 / 6 | Normal / accelerated speed, world units per second |
 | `acceleration` | 3 | Acceleration, world units per second squared |
-| `captureRecoverySeconds` | 3 | Delay before a captured fish can score again |
+| `maxHoverSeconds` | 2 | Maximum stationary/hidden rest, seconds |
 | `backgroundDetail` | 2 | 0 = low, 1 = medium, 2 = high |
 | `durationSeconds` | 90 | Block duration in seconds |
 | `monitoringHalfAngle` | 25 | Head-direction monitoring sector half-angle, degrees |
@@ -68,6 +72,8 @@ Stop Play and choose **PBR > Select projection room settings**, or select **Proj
 | Observer eye height | 1.6 m; adjust for the participant |
 | Tester offset (X / Z) | 0 / 0 m, the floor center |
 | Projection bottom / top margin | 0 / 0 m; confirm active screen boundaries on site |
+
+The virtual viewpoint is at Y = 0.55 m, approximately 0.8 m above the central seabed. Adjust the separate seabed-view-height field in Projection Room; cameras, aiming and occlusion update together. Physical eye height remains a room-calibration setting.
 
 The dimensions are a published LargeSpace preset, not an on-site measurement. Four cameras compute off-axis projections from the wall boundaries and observer position. Desktop previews preserve wall proportions. Scene-view guides show room boundaries and the observer without obscuring the reef. The optional `-pbr-four-displays` player argument maps front/right/back/left to display indices 0–3; fewer than four displays fall back to desktop preview.
 
@@ -123,9 +129,13 @@ The application form is background material. Its form-filling instructions are n
 
 本 Unity 研究原型基于 **Responsibility-Aware Adaptive Assistance in Large-Area Collaborative Visual Search** 申请书，探索双人责任分配、基于头部朝向的监视方向估计、方向提示和临时任务移交。
 
-当前版本包含连续四面 3D 海底与可配置投影室。默认固定十条鱼，具有随机游动、加速、游到实体遮挡物后藏匿、静止四种状态，并支持平滑转向及不同深度、高度的移动。捕鱼计分后鱼不会消失，三秒后可再次计分；待机、实验开始和结束时均保留同一批鱼。
+当前版本包含连续四面 3D 海底与可配置投影室。初始总计 50 条鱼，涵盖 8 种鱼形，具有随机游动、加速、游到实体遮挡物后藏匿、静止四种状态，并支持平滑转向及不同深度、高度的移动。静止和藏匿后的停留最多两秒。鼠标左键发射白色渔网，范围内可见的鱼挣扎后消失，剩余数量相应减少；未捕获的鱼跨 block 保留，RESET SCHOOL 可恢复初始鱼群。
 
 场景包含礁石、洞穴、天然拱洞、密集水草和扇珊瑚，背景细节分为三档。鱼在同一个环绕三维空间中移动，连续跨越相邻墙面的画面边界。实体遮挡物同时阻挡可见性与捕鱼射线。
+
+自然海底升级加入 2K 扫描岩石/沙地材质、不规则礁石、弯曲摆动的水草、密集珊瑚/海草/碎石，以及柔和阴影和水下光照。详见[自然海底更新与素材来源](Documentation/NaturalReef.md)。
+
+渔网默认可捕获所有种类，也可开启实验责任权限限制。详见[渔网动画、剩余数量与重置](Documentation/NetCapture.md)。
 
 ### 打开与运行
 
@@ -133,9 +143,9 @@ The application form is background material. Its form-filling instructions are n
 2. 使用 **Unity 6000.6.3f1（Unity 6.6）**，项目依赖 **URP 17.6.0** 和 **Splines 2.9.1**。等待 Unity 恢复依赖并重新生成缓存。
 3. 打开仓库当前包含的实验场景 `Assets/PBR/Scenes/FishAttention360.unity`。
 4. 点击 Play，输入匿名 pair ID，选择实验条件，点击 START。默认每个 block 为 90 秒。
-5. 橙色鱼属于 A，青色鱼属于 B，灰色鱼为干扰项。白色标记表示允许临时移交的目标；其余 A/B 目标保留原责任。
+5. 橙色/奶油色鱼属于 A，蓝色/金色鱼属于 B，紫色鱼为干扰项。白色标记表示允许临时移交的目标；其余 A/B 目标保留原责任。
 
-`BuildsRoom/PBRRoom.exe` 等本地可执行文件、Unity 缓存、备份和独立验证工程不随 Git 上传。新克隆的工程可直接在 Unity 编辑器中运行。
+`BuildsLow/PBRLow.exe` 等本地可执行文件、Unity 缓存、备份和独立验证工程不随 Git 上传。新克隆的工程可直接在 Unity 编辑器中运行。
 
 | 操作 | 功能 |
 | --- | --- |
@@ -156,10 +166,10 @@ The application form is background material. Its form-filling instructions are n
 
 | 参数 | 默认值 | 含义 |
 | --- | --- | --- |
-| `fishCount` | 10 | 固定鱼群数量 |
+| `fishCount` | 50 | 固定鱼群数量 |
 | `swimSpeed` / `burstSpeed` | 2.4 / 6 | 普通 / 加速速度，世界单位/秒 |
 | `acceleration` | 3 | 加速度，世界单位/秒² |
-| `captureRecoverySeconds` | 3 | 捕鱼后再次计分的等待秒数 |
+| `maxHoverSeconds` | 2 | 静止与藏匿停留的最长秒数 |
 | `backgroundDetail` | 2 | 0 低、1 中、2 高 |
 | `durationSeconds` | 90 | block 时长，秒 |
 | `monitoringHalfAngle` | 25 | 头部监视扇区半角，度 |
@@ -183,6 +193,8 @@ The application form is background material. Its form-filling instructions are n
 | 观察眼高 | 1.6 米，按受试者调整 |
 | 站位偏移 X / Z | 0 / 0 米，即地面中心 |
 | 投影下沿距地 / 上沿距顶 | 0 / 0 米，现场确认有效投影边界 |
+
+虚拟视点已降到 Y=0.55 米，约高于中心海床 0.8 米。可在 Projection Room 中调整独立的“海底虚拟视点高度 Y”，相机、瞄准和遮挡判定会同步更新；真实观察眼高仍用于投影室标定。
 
 尺寸来自 LargeSpace 公开资料，尚未现场测量。四台相机根据墙面边界和观察点计算离轴透视，桌面预览保留墙面宽高比例。Scene 辅助线显示房间边界与观察点，不遮挡海底。运行程序时可选用 `-pbr-four-displays` 参数，将前、右、后、左映射到显示器索引 0–3；不足四个显示器时退回桌面预览。
 
@@ -238,9 +250,13 @@ The application form is background material. Its form-filling instructions are n
 
 本 Unity 研究プロトタイプは、研究計画 **Responsibility-Aware Adaptive Assistance in Large-Area Collaborative Visual Search** に基づき、2 名の参加者間での責任分担、頭部方向による監視方向の推定、方向提示、一時的なタスク引き継ぎを扱います。
 
-現在のバージョンには、連続した四面の 3D 海底環境と、設定可能な投影室が含まれます。魚は初期設定で 10 匹に固定され、遊泳、加速、実体のある遮蔽物の背後への移動と隠蔽、静止の 4 状態を持ちます。旋回は滑らかで、奥行きや高さを変えて移動します。捕獲して得点しても魚は消えず、3 秒後に再び得点対象になります。待機中、実験開始時、終了時も同じ魚群を維持します。
+現在のバージョンには、連続した四面の 3D 海底環境と、設定可能な投影室が含まれます。初期の魚群は合計 50 匹、8 種類のシルエットで構成され、遊泳、加速、実体のある遮蔽物の背後への移動と隠蔽、静止の 4 状態を持ちます。旋回は滑らかで、奥行きや高さを変えて移動します。静止と隠れた後の停止は最大 2 秒です。左クリックで白い網を発射し、範囲内で遮蔽されていない魚はもがいた後に消え、残数が減ります。未捕獲の魚はブロック間で維持され、RESET SCHOOL で初期の魚群に戻せます。
 
 環境には岩、洞窟、自然のアーチ、密集した水草、ウミウチワ状のサンゴを配置し、背景の詳細度を 3 段階で設定できます。魚は単一の周囲を取り囲む 3D 空間を移動し、隣接する壁面映像の境界を連続して通過します。遮蔽物は視認性と捕獲用レイの両方を遮ります。
+
+自然海底への更新では、2K のスキャン岩石・砂地マテリアル、不規則な岩礁、湾曲して揺れる水草、密集したサンゴ・海草・小石、柔らかな影と水中照明を追加しました。[自然海底の更新内容と出典](Documentation/NaturalReef.md)を参照してください。
+
+網は初期設定で全種類を捕獲でき、実験上の担当権限による制限も設定できます。[網のアニメーション、残数とリセット](Documentation/NetCapture.md)を参照してください。
 
 ### 起動方法
 
@@ -248,9 +264,9 @@ The application form is background material. Its form-filling instructions are n
 2. **Unity 6000.6.3f1（Unity 6.6）** を使用します。依存パッケージは **URP 17.6.0** と **Splines 2.9.1** です。パッケージの復元とキャッシュの再生成を待ちます。
 3. このリポジトリに含まれる実験シーン `Assets/PBR/Scenes/FishAttention360.unity` を開きます。
 4. Play を押し、匿名の pair ID と実験条件を設定して START を選択します。1 ブロックの初期設定は 90 秒です。
-5. オレンジ色の魚は A、水色の魚は B の担当で、灰色の魚は妨害刺激です。白いマーカーは一時的な引き継ぎが可能な対象を示し、それ以外の A/B 対象は元の担当を維持します。
+5. オレンジ・クリーム色の魚は A、青・金色の魚は B の担当で、紫色の魚は妨害刺激です。白いマーカーは一時的な引き継ぎが可能な対象を示し、それ以外の A/B 対象は元の担当を維持します。
 
-`BuildsRoom/PBRRoom.exe` などのローカル実行ファイル、Unity キャッシュ、バックアップ、独立した検証用プロジェクトは Git に含まれません。クローン後は Unity Editor から直接実行できます。
+`BuildsLow/PBRLow.exe` などのローカル実行ファイル、Unity キャッシュ、バックアップ、独立した検証用プロジェクトは Git に含まれません。クローン後は Unity Editor から直接実行できます。
 
 | 操作 | 機能 |
 | --- | --- |
@@ -271,10 +287,10 @@ Inspector で `Assets/PBR/Generated360/PilotConfig.asset` を選択します。�
 
 | パラメーター | 初期値 | 意味 |
 | --- | --- | --- |
-| `fishCount` | 10 | 固定する魚の数 |
+| `fishCount` | 50 | 固定する魚の数 |
 | `swimSpeed` / `burstSpeed` | 2.4 / 6 | 通常時 / 加速時の速度、ワールド単位/秒 |
 | `acceleration` | 3 | 加速度、ワールド単位/秒² |
-| `captureRecoverySeconds` | 3 | 捕獲後、再び得点可能になるまでの秒数 |
+| `maxHoverSeconds` | 2 | 静止・隠蔽後の停止時間の上限、秒 |
 | `backgroundDetail` | 2 | 0 = 低、1 = 中、2 = 高 |
 | `durationSeconds` | 90 | ブロックの長さ、秒 |
 | `monitoringHalfAngle` | 25 | 頭部方向に基づく監視領域の半角、度 |
@@ -298,6 +314,8 @@ Play を停止し、**PBR > Select projection room settings** を選択するか
 | 観察者の眼高 | 1.6 m。参加者に合わせて調整 |
 | 立ち位置のオフセット X / Z | 0 / 0 m、床面の中心 |
 | 投影下端の床からの高さ / 上端の天井からの余白 | 0 / 0 m。有効投影範囲は現地で確認 |
+
+仮想視点は Y=0.55 m、中央の海底から約 0.8 m の高さに下げています。Projection Room の独立した海底視点高さを調整すると、カメラ・照準・遮蔽判定が同時に更新されます。実際の眼高は投影室の校正用設定として維持します。
 
 寸法は LargeSpace の公開資料に基づく初期設定であり、現地で実測した値ではありません。4 台のカメラが壁面境界と観察位置からオフアクシス投影を計算し、デスクトップ表示では壁面の縦横比を維持します。Scene ビューの補助線は海底を遮らずに室内境界と観察点を示します。実行ファイルの `-pbr-four-displays` オプションは、前・右・後・左をディスプレイ番号 0–3 に割り当てます。4 台未満の場合はデスクトップ表示に戻ります。
 

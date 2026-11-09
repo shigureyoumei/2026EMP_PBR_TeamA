@@ -73,22 +73,25 @@ namespace PBR
                 if (!ChooseDestination(false)) next = FishMotionState.Stationary;
             State = next; Transitions++;
             remaining = next == FishMotionState.Accelerating ? Range(2.5f, 4.5f) : Range(3, 7);
+            if(next==FishMotionState.Stationary)remaining=Range(Mathf.Min(.4f,config.MaximumHoverDuration),config.MaximumHoverDuration);
             if (next == FishMotionState.Stationary) Speed = 0;
             Changed?.Invoke("state=" + State);
         }
         void NextState()
         {
+            if(State==FishMotionState.Stationary || HiddenAtRest){SetState(rng.Next(2)==0?FishMotionState.Swimming:FishMotionState.Accelerating);return;}
             int choice = rng.Next(3);
             if (choice >= (int)State) choice++;
             SetState((FishMotionState)choice);
         }
         public virtual void Tick(float dt)
         {
+            float elapsed=Mathf.Max(0,dt);
             // Slow motion during a stalled frame is preferable to a visible jump.
             dt = Mathf.Clamp(dt, 0, .05f);
             if (State == FishMotionState.Stationary || HiddenAtRest)
             {
-                Speed = 0; remaining -= dt;
+                Speed = 0; remaining -= elapsed;
                 if (remaining <= 0) NextState();
             }
             else
@@ -110,7 +113,7 @@ namespace PBR
                     if (Vector3.Distance(destination, transform.position) < .03f && FullyOccluded(transform.position))
                     {
                         HiddenAtRest = true; Speed = 0;
-                        remaining = Mathf.Max(.1f, config.hidePauseSeconds) + Range(0, 1.5f);
+                        remaining = Mathf.Clamp(config.hidePauseSeconds,.1f,config.MaximumHoverDuration);
                         Changed?.Invoke("hide_arrived");
                     }
                     else if (approachTime > 25) SetState(FishMotionState.Swimming);

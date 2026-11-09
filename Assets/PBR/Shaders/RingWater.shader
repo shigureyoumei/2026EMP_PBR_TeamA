@@ -16,13 +16,15 @@ Shader "PBR/Surrounding Water"
             half4 Frag(V i):SV_Target
             {
                 float3 d=normalize(i.world-_WorldSpaceCameraPos);
-                float elevation=saturate(d.y*1.7+.12);
-                half3 color=lerp(half3(.009,.10,.16),half3(.02,.42,.53),elevation);
-                float sun=pow(saturate(dot(d,normalize(float3(-.3,.85,.25)))),12);
-                float waves=sin(d.x*65+sin(d.z*40+_Time.y*.1)*2)+sin(d.z*79+sin(d.x*37)*2);
-                float surface=pow(saturate(1-abs(waves)*1.3),5)*pow(saturate(d.y),2);
-                float shafts=pow(saturate(sin(atan2(d.x,d.z)*25+d.y*3)),18)*saturate(d.y+.1)*.035;
-                color+=sun*half3(.18,.26,.22)+surface*half3(.08,.2,.17)+shafts;
+                float elevation=saturate(d.y*1.25+.18);
+                half3 color=lerp(half3(.018,.105,.14),half3(.085,.39,.43),elevation);
+                float alignment=saturate(dot(d,normalize(float3(.32,.82,.46))));
+                float sun=pow(alignment,36);
+                float2 surfaceUV=d.xz/max(.18,d.y);
+                float distortion=sin(surfaceUV.x*12+sin(surfaceUV.y*7+_Time.y*.12))*sin(surfaceUV.y*14-_Time.y*.15);
+                float surface=pow(saturate(d.y),4)*(.025+.018*distortion);
+                float shaft=pow(saturate(.5+.5*sin(d.x*47+d.z*31+d.y*7)),24)*pow(alignment,5)*saturate(d.y)*.045;
+                color+=sun*half3(.28,.37,.31)+surface*half3(.38,.6,.58)+shaft;
                 return half4(color,1);
             }
             ENDHLSL

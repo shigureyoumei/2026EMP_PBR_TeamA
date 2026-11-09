@@ -48,6 +48,8 @@ namespace PBR
         public void Prepare()
         {
             if (nodes.Count != 0) return;
+            // Thin kelp leaves render on both sides; capture/visibility rays must hit both sides too.
+            Physics.queriesHitBackfaces=true;
             Physics.SyncTransforms();
             for (int y = 0; y < Levels; y++) for (int r = 0; r < Rings; r++) for (int a = 0; a < Angles; a++)
             { nodes.Add(Polar(a * Mathf.PI * 2 / Angles, 8 + r * 3, 1.6f + y * 2.6f)); edges.Add(new List<int>()); }

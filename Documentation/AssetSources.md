@@ -2,6 +2,8 @@
 
 核对日期：2026-09-30。
 
+2026-11-01 更新：当前四面自然海底使用新增的程序化鱼形、礁石、水草与珊瑚网格，并引入 Poly Haven 的 CC0 扫描岩石/沙地纹理。Powered by [Poly Haven](https://polyhaven.com/)。完整来源、作者、限制与文件位置见 [NaturalReef.md](NaturalReef.md)。下表为早期原型的历史素材记录。
+
 | 内容 | 来源 | 许可/状态 |
 | --- | --- | --- |
 | 鱼模型 Fish1/Fish2/Fish3 与游泳动画 | https://opengameart.org/content/animated-fish （作者 quaternius） | CC0；作者 Animated Fish 2018 素材，已导入 |

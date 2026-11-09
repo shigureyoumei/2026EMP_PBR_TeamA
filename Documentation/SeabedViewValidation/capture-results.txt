@@ -1,0 +1,2 @@
+Normal-loop log: C:/Users/naran/AppData/LocalLow/DefaultCompany/PBR\PBRLogs\20261101T051816478_dc4271a0
+PASS: 360103 checks; two-second hovering and hiding; pointer mapping in six layouts; frozen click ray; net launch/impact; area capture of all species; outside/real-cover rejection; struggle and 50-to-47 removal; no duplicate catches; optional role filter; cancellation; real input loop and capture-phase logging; no automatic replenishment; explicit reset.

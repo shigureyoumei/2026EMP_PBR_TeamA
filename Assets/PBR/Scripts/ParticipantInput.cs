@@ -9,6 +9,7 @@ namespace PBR
         public readonly float[] Pitch = { 0, 0 };
         public readonly string[] Source = { "desktop", "desktop" };
         readonly bool[] shots = new bool[2];
+        readonly Ray[] shotRays=new Ray[2];
         readonly float[] rawYaw = new float[2], offset = new float[2];
         readonly double[] received = { -999, -999 };
         public int Selected { get; private set; }
@@ -29,25 +30,33 @@ namespace PBR
             received[player] = Time.realtimeSinceStartupAsDouble;
         }
         public void CalibrateForward(int player) { if (player >= 0 && player < 2) { offset[player] = rawYaw[player]; Yaw[player] = 0; } }
-        public void SubmitButton(int player) { if (player >= 0 && player < 2) shots[player] = true; }
+        public void SubmitButton(int player) { if (player >= 0 && player < 2){ shots[player] = true;shotRays[player]=Aim(player);} }
         public bool ConsumeShot(int player) { bool value = shots[player]; shots[player] = false; return value; }
+        public bool ConsumeShot(int player,out Ray ray){ray=shotRays[player];return ConsumeShot(player);}
         public void ClearShots() { shots[0] = shots[1] = false; }
+        public bool TryPointerRay(Vector2 position,out Ray ray)
+        {
+            if(Cameras!=null)foreach(var camera in Cameras)
+                if(camera && camera.isActiveAndEnabled && camera.pixelRect.Contains(position))
+                {ray=new Ray(Origin,camera.ScreenPointToRay(position).direction.normalized);return true;}
+            ray=default;return false;
+        }
         void Update()
         {
             if (!DesktopInput) return;
             var kb = Keyboard.current;
             var mouse = Mouse.current;
             if (kb != null && kb.tabKey.wasPressedThisFrame) Selected = 1 - Selected;
+            bool mouseInView=false;
             if (Source[Selected] == "desktop" && mouse != null && Cameras != null)
             {
                 Vector2 pos = mouse.position.ReadValue();
-                foreach (var camera in Cameras)
+                if(TryPointerRay(pos,out var pointerRay))
                 {
-                    if (!camera || !camera.isActiveAndEnabled || !camera.pixelRect.Contains(pos)) continue;
-                    Vector3 dir = camera.ScreenPointToRay(pos).direction;
+                    mouseInView=true;
+                    Vector3 dir = pointerRay.direction;
                     Yaw[Selected] = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
                     Pitch[Selected] = Mathf.Asin(dir.y) * Mathf.Rad2Deg;
-                    break;
                 }
             }
             int other = 1 - Selected;
@@ -56,7 +65,7 @@ namespace PBR
                 Yaw[other] += ((kb.rightArrowKey.isPressed ? 1 : 0) - (kb.leftArrowKey.isPressed ? 1 : 0)) * 50 * Time.unscaledDeltaTime;
                 Pitch[other] = Mathf.Clamp(Pitch[other] + ((kb.upArrowKey.isPressed ? 1 : 0) - (kb.downArrowKey.isPressed ? 1 : 0)) * 35 * Time.unscaledDeltaTime, -65, 65);
             }
-            if (mouse != null && mouse.leftButton.wasPressedThisFrame) SubmitButton(Selected);
+            if (mouse != null && mouseInView && mouse.leftButton.wasPressedThisFrame) SubmitButton(Selected);
             if (kb != null)
             {
                 if (kb.fKey.wasPressedThisFrame) SubmitButton(0);

@@ -1,0 +1,2 @@
+PASS: 1460378 assertions; 120 simulated seconds; 50 stable fish; 8 species silhouettes; balanced roles; all 4 motion states; 49 fish physically hid; matching cover render/collider meshes; four-wall seams.
+PASS: normal rendered 15-second block; 50 fish retained; average FPS 60.0; log C:/Users/naran/AppData/LocalLow/DefaultCompany/PBR\PBRLogs\20261101T035718316_37fd9288

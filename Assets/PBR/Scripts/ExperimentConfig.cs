@@ -13,11 +13,23 @@ namespace PBR
         public bool persistentSchool;
         public bool ringWorld;
         [Range(0, 2)] public int backgroundDetail = 2;
-        [Range(1, 40)] public int fishCount = 10;
+        public const int MaximumFishCount = 100;
+        [Range(1, MaximumFishCount)] public int fishCount = 10;
+        public bool naturalReef;
         [Min(.1f)] public float swimSpeed = 1.5f;
         [Min(.1f)] public float burstSpeed = 4f;
         [Min(.1f)] public float acceleration = 2f;
         [Min(.1f)] public float captureRecoverySeconds = 3f;
+        [Range(.1f,2)] public float maxHoverSeconds = 2;
+        public float MaximumHoverDuration=>Mathf.Clamp(maxHoverSeconds,.1f,2);
+        [Header("Area net capture")]
+        public bool netCaptureEnabled;
+        public bool netRespectsRoles;
+        [Range(.5f,5)] public float netRadius = 2;
+        [Range(5,35)] public float netDistance = 18;
+        [Range(.1f,1)] public float netFlightSeconds = .32f;
+        [Range(.5f,2)] public float netStruggleSeconds = 1.1f;
+        public Material netMaterial;
         [Min(10)] public float durationSeconds = 90;
         [Min(.5f)] public float spawnInterval = 3;
         [Min(3)] public float travelSeconds = 16;

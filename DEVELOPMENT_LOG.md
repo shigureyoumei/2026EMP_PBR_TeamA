@@ -2,6 +2,36 @@
 
 Add every new update directly below this introduction, above all previous entries. Use English, include a timestamp in JST (UTC+09:00), and briefly describe completed features and verification. Keep older entries intact.
 
+## 2026-11-01 14:19 JST — Near-Seabed Viewpoint
+
+- Lowered the virtual observation height from Y=3 to Y=0.55, approximately 0.8 meters above the central seabed at Y=-0.25. Nearby sand, plant bases and reef foundations are now visible from a lower perspective.
+- Added the Chinese-labeled seabed viewpoint height setting to the Projection Room Inspector. It is independent of the physical participant eye height used for room calibration.
+- Synchronized all four wall cameras, the mouse/net aiming origin and the fish-occlusion viewpoint when virtual height changes. Preserved physical eye height and wall-frustum geometry.
+- Verification: the player build succeeded; 24 geometry checks passed. The lowered-view player also passed all 360,103 net/hover integration checks, including all desktop layouts, real-cover rejection, area capture, count reduction, cancellation and reset. All four rendered wall views were inspected.
+- Updated the three-language README and room instructions. Current scene: `Assets/PBR/Scenes/FishAttention360.unity`. Local executable: `BuildsLow/PBRLow.exe`. Evidence: `Documentation/SeabedViewValidation/`. Previous scene backup: local `Backups/20261101_before_low_view/`.
+
+## 2026-11-01 13:47 JST — Animated Area Net Capture and Two-Second Hovering
+
+- Limited stationary and hidden rest to at most two seconds, including slow-frame timer handling. Rest transitions lead back to swimming/acceleration instead of chaining another rest. Shorter configured limits are supported.
+- Added a white woven net that launches toward the saved mouse-click direction, expands, tightens and fades. All four wall cameras render the same world-space effect. Clicks outside an active wall viewport are ignored; F/J use the corresponding participant's current direction.
+- Added area capture at net impact with individual physical-cover checks. By default, every fish type is catchable; optional role filtering preserves the earlier ownership/distractor/handoff rules for protocol use.
+- Caught fish stop navigating, struggle with body rotation and rapid tail movement, fade out after 1.1 seconds and are removed. Capture score and remaining population update together at removal; repeated nets cannot count a reserved fish twice.
+- Changed population behavior from permanent retention to an initial fifty-fish school that decreases with catches. Starting a new block does not replenish it, including at zero. Added an explicit RESET SCHOOL button. Stopping a block restores unfinished catches and clears their net effects.
+- Added net-launch, impact, ensnare, removal and cancellation events, plus `capture_in_progress` in samples. Updated the three-language README and added `Documentation/NetCapture.md`.
+- Verification: Unity player build succeeded; 360,103 integration checks passed, including 120 simulated seconds of rest timing, all six desktop preview layouts, exact frozen click rays, a three-fish catch reducing 50 to 47, real-cover/outside rejection, duplicate prevention, role filtering, cancellation, actual input/update processing, capture-phase logs, empty-school persistence and manual reset. Launch/struggle/removal renders were inspected; the final player log contained no errors or exceptions.
+- Current scene: `Assets/PBR/Scenes/FishAttention360.unity`. Local executable: `BuildsNet/PBRNet.exe`. Evidence: `Documentation/NetCaptureValidation/`. Pre-change scene/configuration backup: local `Backups/20261101_before_net_capture/`.
+
+## 2026-11-01 13:00 JST — Natural Reef Materials and Fifty Persistent Fish
+
+- Replaced the current scene's coarse background surfaces with 2K CC0 scanned coastal limestone and sand maps, world-space normal/roughness shading, irregular boulders, weathered cave/arch interiors, curved ribbon kelp and branching coral geometry. Asset sources, creators and file checksums are recorded.
+- Added 160 seagrass patches, 100 branching coral colonies, 20 sea-fan colonies, 150 seabed rubble pieces and 48 distant outcrops around the existing 16 physical cover sites. Background detail remains adjustable independently of fish count.
+- Added underwater scattered fill, soft sunlight shadows, animated caustics, gentle plant sway, subtle light shafts, marine particles, ACES tonemapping and restrained bloom. Main cover render/collision meshes match; two-sided leaf queries prevent capture through the back of kelp.
+- Set the current scene to exactly 50 persistent fish using eight species-inspired silhouettes and 24 A/B/distractor prefab variants. The school contains 20 A targets, 20 B targets and 10 distractors. Added curved bodies, fins, smaller eyes, surface markings and speed-responsive tail bending.
+- Replaced the former 40-fish runtime/Inspector cap with a shared maximum of 100. Preserved gradual turns, depth movement, all four behavior states, physical hiding, capture cooldown and stable population across blocks. Added collision-safe initial placement for denser schools.
+- Verification: Unity player build succeeded without shader/compiler errors. The final environment passed 1,460,378 assertions over 120 simulated seconds; 49 fish reached physically occluded hiding positions. A normal 15-second rendered block retained 50 fish and averaged 60.0 FPS at a 1920 × 1080 desktop preview on the current machine. All four final wall renders were inspected.
+- Updated the English/Chinese/Japanese README and added `Documentation/NaturalReef.md`. Evidence: `Documentation/NaturalReefValidation/`. Local executable: `BuildsNatural/PBRNatural.exe`. Scene: `Assets/PBR/Scenes/FishAttention360.unity`. Previous scene/configuration: local `Backups/20261101_before_natural_reef/`.
+- Limits: animal/vegetation meshes are procedural species-inspired forms; scanned textures do not make them biological reconstructions. Plant collision stays static during small visual sway; extra low-level decorations are visual clutter, not additional experimental cover. Physical projector-room calibration and unknown sensor hardware remain future integration work.
+
 ## 2026-10-02 12:52 JST — Trilingual Project README
 
 - Replaced the Chinese-only README with equivalent English, Chinese, and Japanese sections, in that order, with language navigation links.

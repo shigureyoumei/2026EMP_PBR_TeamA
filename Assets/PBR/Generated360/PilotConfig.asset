@@ -16,11 +16,20 @@ MonoBehaviour:
   persistentSchool: 1
   ringWorld: 1
   backgroundDetail: 2
-  fishCount: 10
+  fishCount: 50
+  naturalReef: 1
   swimSpeed: 2.4
   burstSpeed: 6
   acceleration: 3
   captureRecoverySeconds: 3
+  maxHoverSeconds: 2
+  netCaptureEnabled: 1
+  netRespectsRoles: 0
+  netRadius: 2
+  netDistance: 18
+  netFlightSeconds: 0.32
+  netStruggleSeconds: 1.1
+  netMaterial: {fileID: 2100000, guid: 0153a95892a59a44698765644e6e006e, type: 2}
   durationSeconds: 90
   spawnInterval: 3
   travelSeconds: 16
@@ -34,9 +43,30 @@ MonoBehaviour:
   shotCooldown: 0.2
   panoramicPreview: 0
   fishPrefabs:
-  - {fileID: 3117882010323047475, guid: aea85242e96a153488358c5c16218b6e, type: 3}
-  - {fileID: 2971479965097845884, guid: fea582acda5325d4695cec581d869f5d, type: 3}
-  - {fileID: 5175769010928796624, guid: 8b794c4ea33ca494aad8c388ca1d66ed, type: 3}
+  - {fileID: 723745828668256145, guid: ab4d6c745a009e747aa8093704f39245, type: 3}
+  - {fileID: 2400108027458329886, guid: 5be44b2a82bd394438f80f014966d652, type: 3}
+  - {fileID: 1684632794846971733, guid: a1e45744ef06d8c45816fb61bb141e7a, type: 3}
+  - {fileID: 851145194522094620, guid: b7572efd8891a7143a73a82c5c5f3286, type: 3}
+  - {fileID: 4590937344796402729, guid: d128203582443684aa6c05766100e618, type: 3}
+  - {fileID: 7761834429899173036, guid: 0e824682bd1197244a8376b3c60c239d, type: 3}
+  - {fileID: 854858665765806954, guid: f602525092f26d74ab9e32cba6cdf6e9, type: 3}
+  - {fileID: 2335003551894046159, guid: 18ce2113f2ade0741a21b4167b8fc83d, type: 3}
+  - {fileID: 2638284465014620093, guid: e9440b13fee601f47aea25eb62d6f50c, type: 3}
+  - {fileID: 2866886888984704732, guid: 82d448d2fd4a99b4ca6fe6ee155b9c2e, type: 3}
+  - {fileID: 7253419524296517306, guid: 594a9d8397b42b342abdf73c72af097a, type: 3}
+  - {fileID: 4343793809600647379, guid: f97c69e8d2ae5e340942d4ac135e8acd, type: 3}
+  - {fileID: 3894977148123470790, guid: fa2c946c0d0a62e4fbf323a5ec14f311, type: 3}
+  - {fileID: 8948338913379447369, guid: eb6d6708650af704ebbfbdaebcbe0500, type: 3}
+  - {fileID: 5596865848602173687, guid: b78426c7ece01244b8061ea3c5e4c86e, type: 3}
+  - {fileID: 865039317344282120, guid: 6f5f743fb2c43f34398d4802922f459f, type: 3}
+  - {fileID: 3612643877134996847, guid: fd5e31a4882166d4ba2a7bcc6a4af152, type: 3}
+  - {fileID: 4390548036457247178, guid: 796aae63f97c8ab439b5ebdd186d078c, type: 3}
+  - {fileID: 8851583588385296538, guid: 818a07ce9f7a6e74d94006c6d884117c, type: 3}
+  - {fileID: 805646454892611717, guid: 36ac6723ccddd2647844bbdc04b2fd29, type: 3}
+  - {fileID: 918276164872268326, guid: 226c1cc43f924154594a5d9a9c84d093, type: 3}
+  - {fileID: 6775385755971589959, guid: 56bc1d23e7a467946a3dadb0cc08d84c, type: 3}
+  - {fileID: 3584909932730793183, guid: 7d7b6315b9d7e4e4aa4f8bdccdd5e7b5, type: 3}
+  - {fileID: 4367106788205436550, guid: 06eab5e1cd8700848971e2a7ba884544, type: 3}
   rockPrefabs:
   - {fileID: 919132149155446097, guid: 8bf597a3cf9c22349a394d0eace9c738, type: 3}
   - {fileID: 919132149155446097, guid: 313a46edfe490f044bf0fc22d87128f8, type: 3}

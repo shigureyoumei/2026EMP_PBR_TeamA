@@ -27,7 +27,7 @@ namespace PBR
             poses = new StreamWriter(Path.Combine(Folder, "orientation.csv"), false, new UTF8Encoding(false));
             poses.WriteLine("time_s,frame,yaw_a,yaw_b,pitch_a,pitch_b,input_a,input_b,valid_a,valid_b");
             events.WriteLine("time_s,frame,event,fish_id,kind,owner,actor,handoff_player,detail");
-            samples.WriteLine("time_s,frame,fish_id,kind,owner,x,y,z,target_yaw,yaw_a,yaw_b,pitch_a,pitch_b,input_a,input_b,valid_a,valid_b,line_visible,covered_a,covered_b,handoff_player,workload_a,workload_b,gap_s,motion_state,speed,hidden_at_rest,cover_kind,cover_site");
+            samples.WriteLine("time_s,frame,fish_id,kind,owner,x,y,z,target_yaw,yaw_a,yaw_b,pitch_a,pitch_b,input_a,input_b,valid_a,valid_b,line_visible,covered_a,covered_b,handoff_player,workload_a,workload_b,gap_s,motion_state,speed,hidden_at_rest,cover_kind,cover_site,capture_in_progress");
             events.Flush(); samples.Flush(); poses.Flush();
         }
         public void Pose(double t, ParticipantInput input)
@@ -48,7 +48,7 @@ namespace PBR
                 Q(input.Source[0]), Q(input.Source[1]), input.Valid(0) ? 1 : 0, input.Valid(1) ? 1 : 0,
                 visible ? 1 : 0, a ? 1 : 0, b ? 1 : 0, f.HandoffPlayer, wa, wb, N(f.GapSeconds),
                 Q(f.Roaming ? f.Roaming.State.ToString() : "Spline"), N(f.Roaming ? f.Roaming.Speed : 0), f.Roaming && f.Roaming.HiddenAtRest ? 1 : 0,
-                Q(f.Roaming ? f.Roaming.CoverKind : ""), Q(f.Roaming ? f.Roaming.CoverName : "")));
+                Q(f.Roaming ? f.Roaming.CoverKind : ""), Q(f.Roaming ? f.Roaming.CoverName : ""), f.IsBeingCaptured?1:0));
         }
         void Write(StreamWriter writer, string line)
         {

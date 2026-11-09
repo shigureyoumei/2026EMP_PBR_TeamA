@@ -75,6 +75,7 @@ namespace PBR.Editor
             }
             projection.walls=cameras;input.Cameras=cameras;
             ProjectionRoomSetup.Attach();
+            if(config.naturalReef)NaturalReefUpgrade.Upgrade();
             EditorSceneManager.SaveScene(scene,ScenePath);
             var buildScenes=EditorBuildSettings.scenes.Where(s=>s.path!=ScenePath).ToList();buildScenes.Insert(0,new EditorBuildSettingsScene(ScenePath,true));EditorBuildSettings.scenes=buildScenes.ToArray();
             AssetDatabase.SaveAssets();

@@ -22,7 +22,8 @@ namespace PBR
             float width = Screen.width / scale, height = Screen.height / scale;
             GUI.color = new Color(.025f, .1f, .15f, .94f); GUI.DrawTexture(new Rect(0, 0, width, 108), Texture2D.whiteTexture); GUI.color = Color.white;
             GUI.Label(new Rect(26, 12, 560, 34), "PBR  /  COLLABORATIVE REEF SEARCH", title);
-            GUI.Label(new Rect(26, 52, 850, 25), fishLegend, text);
+            bool netMode=experiment.config.netCaptureEnabled;
+            GUI.Label(new Rect(26, 52, 1050, 25), netMode && !experiment.config.netRespectsRoles?"WHITE NET / ALL SPECIES CATCHABLE / FISH DISAPPEAR AFTER STRUGGLING":fishLegend, text);
             GUI.Label(new Rect(26, 80, 850, 23), "Mouse aim · TAB selects player · F / J capture for A / B · Arrows aim other player · ESC stops", small);
             if (!experiment.Running)
             {
@@ -33,6 +34,7 @@ namespace PBR
                 experiment.condition = (ExperimentCondition)GUI.SelectionGrid(new Rect(42, 225, 405, 82), (int)experiment.condition, conditions, 2);
                 GUI.Label(new Rect(42, 323, 400, 48), "Pilot prototype · Desktop head-direction simulation\nShared operator screen; cues are not private yet.", small);
                 if (GUI.Button(new Rect(42, 389, 405, 50), "START " + experiment.config.durationSeconds.ToString("F0") + "s PILOT BLOCK")) experiment.Begin();
+                if(experiment.config.persistentSchool && GUI.Button(new Rect(42,449,405,28),"RESET SCHOOL ("+experiment.config.fishCount+" FISH)"))experiment.ResetSchool();
             }
             else
             {
@@ -47,7 +49,7 @@ namespace PBR
                 }
                 GUI.color = Color.white;
             }
-            GUI.Label(new Rect(26, height - 24, width - 52, 23), "PROTOTYPE / PILOT ONLY     Head direction is not eye gaze     Wrong " + experiment.Wrong + (experiment.config.persistentSchool ? "  Fish " + experiment.Fish.Count + " (including hidden) / hits retain fish" : "  Missed " + experiment.Missed), small);
+            GUI.Label(new Rect(26, height - 24, width - 52, 23), "PROTOTYPE / PILOT ONLY     Head direction is not eye gaze     Wrong " + experiment.Wrong + (experiment.config.persistentSchool ? "  Fish " + experiment.Fish.Count + " (including hidden) / "+(netMode?"net catches remove fish":"hits retain fish") : "  Missed " + experiment.Missed), small);
             GUI.matrix = Matrix4x4.identity;
         }
         void DrawReticle(int player, float scale)

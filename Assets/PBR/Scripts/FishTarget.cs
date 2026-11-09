@@ -16,6 +16,7 @@ namespace PBR
         public float TravelSeconds, PauseSeconds;
         public double CaptureReadyAt;
         public FishRoaming Roaming;
+        public bool IsBeingCaptured { get; internal set; }
         public bool Move(double now)
         {
             float age = (float)(now - Born);

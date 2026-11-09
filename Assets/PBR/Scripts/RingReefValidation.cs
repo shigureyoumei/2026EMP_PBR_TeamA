@@ -31,7 +31,7 @@ namespace PBR
                 try
                 {
                     Check(projection.room && projection.room.roomWidth==25 && projection.room.roomDepth==15 && Mathf.Abs(projection.room.roomHeight-7.7f)<.001f,"Published room preset missing");
-                    Check(session.Fish.Count==10,"Fixed school missing");
+                    Check(session.Fish.Count==session.config.fishCount,"Fixed school missing");
                     projection.Apply();
                     for(int i=0;i<4;i++)
                     {
@@ -40,7 +40,7 @@ namespace PBR
                         var a=projection.walls[i].WorldToViewportPoint(edge);var b=projection.walls[(i+1)%4].WorldToViewportPoint(edge);
                         Check(Mathf.Abs(a.x-1)<.001f && Mathf.Abs(b.x)<.001f && Mathf.Abs(a.y-b.y)<.001f,"Physical room seam mismatch");
                     }
-                    File.WriteAllText(Path.Combine(folder,"results.txt"),"PASS: published room preset, ten fish and four physical wall seams.\n");
+                    File.WriteAllText(Path.Combine(folder,"results.txt"),"PASS: published room preset, configured fish population and four physical wall seams.\n");
                 }
                 catch(Exception e){File.WriteAllText(Path.Combine(folder,"results.txt"),"FAIL: "+e);Application.Quit(1);yield break;}
             }
@@ -48,7 +48,7 @@ namespace PBR
             {
                 try
                 {
-                    Check(session.config.ringWorld && session.Fish.Count==10,"Ring population");
+                    Check(session.config.ringWorld && session.Fish.Count==session.config.fishCount,"Ring population");
                     var originals=session.Fish.ToArray();
                     Check(habitat.rocks.Length==16,"Distributed cover missing");
                     if(habitat.covers!=null && habitat.covers.Length>0)
@@ -123,7 +123,7 @@ namespace PBR
                 yield return new WaitForSecondsRealtime(11);
                 try
                 {
-                    Check(!session.Running && session.Fish.Count==10,"Normal timed block changed population");
+                    Check(!session.Running && session.Fish.Count==session.config.fishCount,"Normal timed block changed population");
                     File.AppendAllText(Path.Combine(folder,"results.txt"),"PASS: normal rendered player loop and timed block completion. Log: "+session.LastLogFolder+"\n");
                 }
                 catch(Exception e) {File.AppendAllText(Path.Combine(folder,"results.txt"),"FAIL: "+e);Application.Quit(1);yield break;}

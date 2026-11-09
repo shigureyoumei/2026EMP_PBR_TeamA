@@ -13,14 +13,18 @@ namespace PBR
         [Min(0)] public float projectionBottom = 0;
         [Min(0)] public float projectionTopMargin = 0;
         public bool showRoomGuides = true;
+        [Min(.15f)] public float seabedViewHeight = .55f;
         [HideInInspector] public Vector3 virtualEye = new Vector3(0,3,0);
         [HideInInspector] public FourWallProjection projection;
+        [HideInInspector] public RingHabitat habitat;
+        ParticipantInput input;
         public Vector3 PhysicalEye => new Vector3(testerOffset.x,eyeHeight,testerOffset.y);
         public Vector3 ToVirtual(Vector3 physicalPoint) => physicalPoint-PhysicalEye+virtualEye;
         public float ProjectionTop => roomHeight-projectionTopMargin;
         public void Sanitize()
         {
             roomWidth=Mathf.Max(1,roomWidth);roomDepth=Mathf.Max(1,roomDepth);roomHeight=Mathf.Max(1,roomHeight);
+            seabedViewHeight=Mathf.Max(.15f,seabedViewHeight);virtualEye.y=seabedViewHeight;
             eyeHeight=Mathf.Clamp(eyeHeight,.1f,roomHeight-.1f);
             testerOffset.x=Mathf.Clamp(testerOffset.x,-roomWidth*.5f+.2f,roomWidth*.5f-.2f);
             testerOffset.y=Mathf.Clamp(testerOffset.y,-roomDepth*.5f+.2f,roomDepth*.5f-.2f);
@@ -33,6 +37,11 @@ namespace PBR
         public void Apply()
         {
             if(!projection || projection.walls==null) return;
+            Sanitize();
+            if(!input)input=projection.GetComponent<ParticipantInput>();
+            if(!habitat)habitat=FindAnyObjectByType<RingHabitat>();
+            if(input)input.Origin=virtualEye;
+            if(habitat)habitat.Eye=virtualEye;
             for(int i=0;i<Mathf.Min(4,projection.walls.Length);i++) if(projection.walls[i]) ApplyCamera(i,projection.walls[i]);
         }
         public void Wall(int index,out Vector3 center,out Vector3 right,out Vector3 outward,out float width)

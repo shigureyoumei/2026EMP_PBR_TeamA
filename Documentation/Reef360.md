@@ -1,6 +1,10 @@
 # 四面环形 3D 海底场景
 
-打开 `Assets/PBR/Scenes/FishAttention360.unity`，点击 Play。最新独立运行版本为 `BuildsRoom/PBRRoom.exe`；`Builds360` 保留上一次礁石版本。
+最新交互：初始 50 条鱼，左键白色渔网范围捕获，鱼挣扎后消失并扣减数量；悬停最多 2 秒。通过开始面板的 RESET SCHOOL 手动恢复鱼群。详见 [NetCapture.md](NetCapture.md)。
+
+2026-11-01：当前版本已升级为自然海底材质与总计 50 条、8 种鱼形的固定鱼群。2K 扫描纹理、弯曲水草、分枝珊瑚及水下光照详见 [NaturalReef.md](NaturalReef.md)。下文有关旧造型和旧鱼群数量的段落保留为历史实现说明，当前参数以 PilotConfig 和新文档为准。
+
+打开 `Assets/PBR/Scenes/FishAttention360.unity`，点击 Play。最新独立运行版本为 `BuildsLow/PBRLow.exe`；`Builds360` 保留上一次礁石版本。
 
 ## 预览和输出
 

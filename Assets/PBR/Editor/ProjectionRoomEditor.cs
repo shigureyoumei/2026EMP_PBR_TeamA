@@ -19,6 +19,9 @@ namespace PBR.Editor
             Field("projectionBottom","投影下沿距地高度");
             Field("projectionTopMargin","投影上沿距顶距离");
             Field("showRoomGuides","显示房间与观察点辅助线");
+            EditorGUILayout.Space();
+            Field("seabedViewHeight","海底虚拟视点高度 Y（米）");
+            EditorGUILayout.HelpBox("默认 Y = 0.55 米，约高于当前海床 0.8 米。此参数控制虚拟海底视角；上方的观察眼高仍用于真实投影室标定。四面相机、瞄准原点和遮挡判定会一起更新。",MessageType.None);
             if(serializedObject.ApplyModifiedProperties()) {var room=(ProjectionRoom)target;room.Sanitize();room.Apply();SceneView.RepaintAll();}
             EditorGUILayout.HelpBox("中心站位为 (0, 0)。四面相机根据墙面和观察位置计算透视；房间框线只用于标定，不会遮挡海底。停止 Play 后修改并 Ctrl+S 保存，运行中的临时修改不会保留。",MessageType.None);
         }

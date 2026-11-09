@@ -1,0 +1,1 @@
+PASS: 24 checks; virtual camera Y 0.55 m; physical eye height retained; input, hiding and four cameras synchronized; wall corners preserved.

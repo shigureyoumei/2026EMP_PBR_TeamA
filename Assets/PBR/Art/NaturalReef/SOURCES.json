@@ -1,0 +1,54 @@
+{
+  "downloaded": "2026-11-01",
+  "credit": "Powered by Poly Haven",
+  "files": [
+    {
+      "file": "coast_sand_01_diffuse.jpg",
+      "asset": "coast_sand_01",
+      "source": "https://polyhaven.com/a/coast_sand_01",
+      "license": "CC0-1.0",
+      "resolution": "2k",
+      "sha256": "E1C37EA8B4282FDA612B0584D864CA4EEF2DA28C2FA9F3930CAD9209414EB979"
+    },
+    {
+      "file": "coast_sand_01_nor_gl.jpg",
+      "asset": "coast_sand_01",
+      "source": "https://polyhaven.com/a/coast_sand_01",
+      "license": "CC0-1.0",
+      "resolution": "2k",
+      "sha256": "E5B1430C751727C8AB0332ADFD8960C48342936146DE258AA9B7736630CDBB62"
+    },
+    {
+      "file": "coast_sand_01_rough.jpg",
+      "asset": "coast_sand_01",
+      "source": "https://polyhaven.com/a/coast_sand_01",
+      "license": "CC0-1.0",
+      "resolution": "2k",
+      "sha256": "93CAEB7332D1593702D97A59040CE178A27C9D705B30C55413E0D2507E09A762"
+    },
+    {
+      "file": "coral_fort_wall_02_diffuse.jpg",
+      "asset": "coral_fort_wall_02",
+      "source": "https://polyhaven.com/a/coral_fort_wall_02",
+      "license": "CC0-1.0",
+      "resolution": "2k",
+      "sha256": "60A92594267B52E1B959411E277495D4720647B56703D9BADC6C294842CC058D"
+    },
+    {
+      "file": "coral_fort_wall_02_nor_gl.jpg",
+      "asset": "coral_fort_wall_02",
+      "source": "https://polyhaven.com/a/coral_fort_wall_02",
+      "license": "CC0-1.0",
+      "resolution": "2k",
+      "sha256": "72C11DA0BD0A7156D4764A5ECA1874BD4DB76DC32D061B9C7230B9326F4A8EA8"
+    },
+    {
+      "file": "coral_fort_wall_02_rough.jpg",
+      "asset": "coral_fort_wall_02",
+      "source": "https://polyhaven.com/a/coral_fort_wall_02",
+      "license": "CC0-1.0",
+      "resolution": "2k",
+      "sha256": "615A1FA072F368790C8BEAF1CC84DD9472BD6781B8083203B7927354FD19A8DD"
+    }
+  ]
+}
