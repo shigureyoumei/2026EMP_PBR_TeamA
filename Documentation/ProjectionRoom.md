@@ -25,7 +25,7 @@
 - [EMP 官方设施介绍](https://www.emp.tsukuba.ac.jp/environment/research)：全周墙面与地面立体投影。页面中的 **18 × 9 × 7.4 m 是钢索运动平台的可动范围**，不是房间尺寸。
 - [筑波大学学位论文 DA09220，1.1.3.3](https://tsukuba.repo.nii.ac.jp/record/50869/files/DA09220.pdf)：描述投影表面的曲率。
 
-这些是公开资料中的尺寸，不是当前场地实测值。本版本用四个平面近似投影墙，尚未复现实际曲面/圆角、投影机布局、畸变校正、边缘融合、立体显示或地面投影。投影上下边界暂按整墙设定，现场确认后应修改。四台 Unity 相机是四个逻辑墙面视图，不等于现场四台投影机。
+这些是公开资料中的尺寸。默认四墙模式用四个平面近似围墙，投影上下边界暂按整墙设定。使用场地样例的曲面网格和投影机参数时，启动下文的 Large Space 模式。
 
 ## 已实现行为
 
@@ -42,3 +42,23 @@
 最新渔网互动运行文件：`BuildsLow/PBRLow.exe`，初始总计 50 条鱼，捕获后数量减少，见 `NetCapture.md`。自然海底版本记录见 `NaturalReef.md`。旧版投影室单独运行文件为 `BuildsRoom/PBRRoom.exe`。自动检查记录位于 `Documentation/ProjectionRoomValidation/`。几何检查覆盖三种房间尺寸、中心及偏心观察点、墙面角点与射线交点；运行检查覆盖四墙接缝、固定鱼群和正常定时 block。
 
 编辑器验证入口：`PBR.Editor.ProjectionRoomSetup.InstallBatch`（仅供独立验证工程批处理）。玩家验证参数：`-pbr-room-smoke`。此批处理入口会保存当前 360 场景并构建玩家，日常修改参数不需要运行它。
+
+## Large Space 样例输出
+
+用 Unity 6.6 打开 PBR，选择 **PBR > Build Large Space player**，生成 `BuildsLargeSpace/PBRLargeSpace.exe`。部署时复制完整的构建目录，并在 EMP 电脑上双击 `Start EMP.cmd`。
+
+在构建目录运行以下命令，按现场画面接入方式选择一个模式。
+
+| PowerShell 命令 | 输出 |
+|---|---|
+| `./PBRLargeSpace.exe -pbr-large-space preview` | 单屏两排，同时检查 A、B 两组六路画面 |
+| `./PBRLargeSpace.exe -pbr-large-space a` | 将样例前六路铺满主显示器 |
+| `./PBRLargeSpace.exe -pbr-large-space b` | 将样例后六路铺满主显示器 |
+| `./PBRLargeSpace.exe -pbr-large-space dual` | 同一进程将 A、B 两组送到显示器 0、1。检测到一个显示器时进入预览 |
+| `./PBRLargeSpace.exe -pbr-large-space emp` | 按现场映射输出六屏，每屏四格。两个眼位使用同一个单目画面。识别不到六个显示输出时进入预览 |
+
+每组按样例视口顺序横排。正式输出时使用现场要求的桌面分辨率和显示器顺序。正式模式每路按样例遮罩的 1400 × 1050 像素渲染，预览使用一半分辨率，可用 `-pbr-large-space-channel-width 1280` 按相同比例调整。固定物理视点取自样例 `scene.unity` 的 ObserverLS，为 `(0, 1.7, -0.1)` 米。可用 `-pbr-large-space-eye "0,1.6,0"` 临时覆盖。虚拟海底视点仍由场景里的 Projection Room 设置。
+
+**Enter** 开始实验，**Esc** 结束，**R** 在暂停时重置鱼群，**H** 显示或隐藏操作面板。鼠标从校正后的画面反算瞄准射线，左键发网，**Tab** 切换玩家。运行期间两位玩家的准星会一起经过投影校正。
+
+`Assets/PBR/Resources/PBRLargeSpace` 含样例的屏幕模型、融合遮罩和从 `DistortedDrawerLS.prefab` 转出的 12 路参数。Unity 6 URP 根据固定观察点生成单目墙面与地面画面，并在对应投影通道应用遮罩。现场应以当前屏幕几何、标定参数和通道映射为准。旧样例的双眼立体驱动、OptiTrack 头部追踪和跨电脑帧同步需另外接入。两台电脑分别运行 A、B 会各自模拟一份鱼群，互动展示应采用同一进程的双屏输出，或由现场系统分配同一画面源。

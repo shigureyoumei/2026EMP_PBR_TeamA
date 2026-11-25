@@ -4,6 +4,8 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 /Builds*/
+!/BuildsLargeSpace/
+/BuildsLargeSpace/*_BackUpThisFolder_ButDontShipItWithYourGame/
 /Backups/
 /Downloads/
 /ValidationProject/

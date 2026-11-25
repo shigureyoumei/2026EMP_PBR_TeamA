@@ -16,6 +16,7 @@ namespace PBR
         public bool DesktopInput = true;
         public Vector3 Origin = new Vector3(0, 3, -6);
         public Camera[] Cameras;
+        internal LargeSpaceProjection LargeSpace { get; set; }
         public bool Valid(int player) => Source[player] == "desktop" || Time.realtimeSinceStartupAsDouble - received[player] < .5;
         public Ray Aim(int player) => new Ray(Origin, Quaternion.Euler(-Pitch[player], Yaw[player], 0) * Vector3.forward);
         // Adapter boundary: call these methods on Unity's main thread. Hardware transport is intentionally separate.
@@ -36,6 +37,7 @@ namespace PBR
         public void ClearShots() { shots[0] = shots[1] = false; }
         public bool TryPointerRay(Vector2 position,out Ray ray)
         {
+            if (LargeSpace) return LargeSpace.TryPointerRay(position, Mouse.current?.displayIndex.ReadValue() ?? 0, out ray);
             if(Cameras!=null)foreach(var camera in Cameras)
                 if(camera && camera.isActiveAndEnabled && camera.pixelRect.Contains(position))
                 {ray=new Ray(Origin,camera.ScreenPointToRay(position).direction.normalized);return true;}

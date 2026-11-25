@@ -13,6 +13,11 @@ namespace PBR
         public bool independentDisplays;
         void Start()
         {
+            if (LargeSpaceProjection.TryStart(this))
+            {
+                enabled = false;
+                return;
+            }
             independentDisplays |= Array.IndexOf(Environment.GetCommandLineArgs(), "-pbr-four-displays") >= 0;
             if (independentDisplays && Display.displays.Length < 4)
             { Debug.LogWarning("Four displays unavailable; using desktop grid."); independentDisplays = false; }
